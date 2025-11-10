@@ -77,7 +77,10 @@ class Reservation extends Component<ReservationProps> {
     const {item, date, renderDay} = this.props;
 
     if (isFunction(renderDay)) {
-      return renderDay(date, item);
+      // Garantir que o date seja sempre passado, mesmo quando não há item
+      // Se date não estiver definido mas item tiver a propriedade day, usar ela
+      const dayToRender = date || (item?.day ? new XDate(item.day) : undefined);
+      return renderDay(dayToRender, item);
     }
 
     const today = date && isToday(date) ? this.style.today : undefined;
